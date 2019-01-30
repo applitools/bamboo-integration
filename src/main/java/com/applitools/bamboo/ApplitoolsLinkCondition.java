@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 @Scanned
 public class ApplitoolsLinkCondition {
-    public static final String MODULE_KEY="com.applitools.bamboo.bamboo-applitools-plugin:ApplitoolsTestsTask";
+    public static final String MODULE_KEY="com.applitools.bamboo.bamboo-integration-plugin:ApplitoolsTask";
     @ComponentImport
     private final PlanManager planManager;
 

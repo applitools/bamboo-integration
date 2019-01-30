@@ -6,15 +6,15 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.applitools.bamboo</groupId>
-    <artifactId>bamboo-applitools-plugin</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <artifactId>bamboo-integration-plugin</artifactId>
+    <version>1.0.2</version>
 
     <organization>
         <name>Applitools</name>
         <url>http://applitools.com/</url>
     </organization>
 
-    <name>bamboo-applitools-plugin</name>
+    <name>bamboo-integration-plugin</name>
     <description>This is the Applitools Bamboo integration plugin.</description>
     <packaging>atlassian-plugin</packaging>
 

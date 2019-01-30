@@ -9,13 +9,19 @@ import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.utils.process.ExternalProcess;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
+import java.util.Map;
 
 @Scanned
 public class ApplitoolsTaskRunner implements TaskType {
     private static final String BATCH_ID = "APPLITOOLS_BATCH_ID";
+    private static final String APPLITOOLS_API_KEY = "APPLITOOLS_API_KEY";
+    private static final String APPLITOOLS_SERVER_URL = "APPLITOOLS_SERVER_URL";
+
+
     @ComponentImport
     private final ProcessService processService;
 
@@ -31,39 +37,15 @@ public class ApplitoolsTaskRunner implements TaskType {
     @Override
     public TaskResult execute(final TaskContext taskContext) throws TaskException {
         final TaskResultBuilder builder = TaskResultBuilder.newBuilder(taskContext).success();
-        final BuildLogger buildLogger = taskContext.getBuildLogger();
-        String executable, execFromCaps, toRun;
 
-        ExternalProcessBuilder processBuilder = new ExternalProcessBuilder();
         ConfigurationMap configMap = taskContext.getConfigurationMap();
-
+        String apiKey = configMap.get(ApplitoolsTaskConfigurator.APPLITOOLS_API_KEY);
+        String serverUrl = StringUtils.defaultIfEmpty(configMap.get(ApplitoolsTaskConfigurator.APPLITOOLS_SERVER_URL), ViewApplitoolsResults.APPLITOOLS_SERVER);
         String batchId = PlanUidUtils.getBatchId(taskContext.getBuildContext().getTypedPlanKey().getKey(), taskContext.getBuildContext().getBuildNumber());
-
-        executable = configMap.get(ApplitoolsTaskConfigurator.COMMAND);
-        execFromCaps = capabilityContext.getCapabilityValue(ApplitoolsTaskConfigurator.CAPABILITY_KEY_PREFIX + executable);
-        toRun = execFromCaps + " " + configMap.get(ApplitoolsTaskConfigurator.COMMAND_PARAMS);
-
-        processBuilder.commandFromString(toRun)
-                .workingDirectory(taskContext.getWorkingDirectory())
-                .env(ApplitoolsTaskConfigurator.APPLITOOLS_API_KEY, configMap.get(ApplitoolsTaskConfigurator.APPLITOOLS_API_KEY))
-                .env(BATCH_ID, batchId);
-
-        EnvVarsParser envVarsParser = new EnvVarsParser(configMap.get(ApplitoolsTaskConfigurator.ENVIRONMENT_VARIABLES));
-
-        if (envVarsParser.isValid()) {
-            processBuilder.env(envVarsParser.asMap());
-        }
-
-        ExternalProcess process = processService.createExternalProcess(
-                taskContext,
-                processBuilder
-        );
-
-        buildLogger.addBuildLogEntry("APPLITOOLS_BATCH_ID:");
-        buildLogger.addBuildLogEntry(batchId);
-        process.execute();
-
-        return builder.checkReturnCode(process, 0).build();
+        Map<String, String> customBuildData = taskContext.getBuildContext().getParentBuildContext().getCurrentResult().getCustomBuildData();
+        customBuildData.put(BATCH_ID, batchId);
+        customBuildData.put(APPLITOOLS_API_KEY, apiKey);
+        customBuildData.put(APPLITOOLS_SERVER_URL, serverUrl);
+        return builder.success().build();
     }
-
 }
