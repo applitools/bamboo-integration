@@ -24,18 +24,8 @@ import java.util.Set;
 @Scanned
 public class ApplitoolsTaskConfigurator extends AbstractTaskConfigurator implements TaskRequirementSupport {
     public static final String APPLITOOLS_API_KEY = "APPLITOOLS_API_KEY";
-    public static final String COMMAND = "command";
-    public static final String COMMAND_PARAMS = "params";
-    public static final String ENVIRONMENT_VARIABLES = "envvars";
-    public static final String SELECTED_EXECUTABLE = "selectedExecutable";
-
-    public static final String CAPABILITY_KEY_PREFIX = "system.builder.command.";
-
+    public static final String APPLITOOLS_SERVER_URL = "APPLITOOLS_SERVER_URL";
     public static final String APPLITOOLS_API_KEY_ERROR_KEY = "applitools.api.key.error";
-    public static final String COMMAND_ERROR_KEY = "command";
-    public static final String SELECTED_EXECUTABLE_ERROR_KEY = "selected.executable.error";
-    public static final String ENV_VARS_PARSE_ERROR_KEY = "envvars.parse.error";
-    private static final String UI_CONFIG_BEAN_VAR_NAME = "uiConfigBean";
 
     @ComponentImport
     private UIConfigSupport uiConfigBean;
@@ -56,26 +46,13 @@ public class ApplitoolsTaskConfigurator extends AbstractTaskConfigurator impleme
 
     public Map<String, String> generateTaskConfigMap(@NotNull final ActionParametersMap params, @Nullable final TaskDefinition previousTaskDefinition) {
         Map<String, String> result = super.generateTaskConfigMap(params, previousTaskDefinition);
-        String applitoolsApiKey, commandToExecute, commandParams, rawEnvironmentVariables, selectedExecutable;
+        String applitoolsApiKey, applitoolsServerUrl;
 
         applitoolsApiKey = params.getString(APPLITOOLS_API_KEY);
-        commandToExecute = params.getString(COMMAND);
-        commandParams = params.getString(COMMAND_PARAMS);
-        rawEnvironmentVariables = params.getString(ENVIRONMENT_VARIABLES);
-        selectedExecutable = params.getString(SELECTED_EXECUTABLE);
+        applitoolsServerUrl = params.getString(APPLITOOLS_SERVER_URL);
 
         result.put(APPLITOOLS_API_KEY, applitoolsApiKey);
-        result.put(COMMAND, commandToExecute);
-        result.put(SELECTED_EXECUTABLE, selectedExecutable);
-
-        if (StringUtils.isNoneBlank(rawEnvironmentVariables)) {
-            result.put(ENVIRONMENT_VARIABLES, rawEnvironmentVariables);
-        }
-
-        if (null != commandParams && StringUtils.isNoneBlank(commandParams)) {
-            result.put(COMMAND_PARAMS, commandParams);
-        }
-
+        result.put(APPLITOOLS_SERVER_URL, applitoolsServerUrl);
         return result;
     }
 
@@ -83,32 +60,18 @@ public class ApplitoolsTaskConfigurator extends AbstractTaskConfigurator impleme
     public void populateContextForEdit(@NotNull final Map<String, Object> context, @NotNull final TaskDefinition taskDefinition) {
         super.populateContextForEdit(context, taskDefinition);
         context.put(APPLITOOLS_API_KEY, taskDefinition.getConfiguration().get(APPLITOOLS_API_KEY));
-        context.put(COMMAND, taskDefinition.getConfiguration().get(COMMAND));
-        context.put(COMMAND_PARAMS, taskDefinition.getConfiguration().get(COMMAND_PARAMS));
-        context.put(ENVIRONMENT_VARIABLES, taskDefinition.getConfiguration().get(ENVIRONMENT_VARIABLES));
-        context.put(UI_CONFIG_BEAN_VAR_NAME, uiConfigBean);
+        context.put(APPLITOOLS_SERVER_URL, taskDefinition.getConfiguration().get(APPLITOOLS_SERVER_URL));
     }
 
     @Override
     public void populateContextForCreate(@NotNull final Map<String, Object> context) {
         super.populateContextForCreate(context);
-        context.put(UI_CONFIG_BEAN_VAR_NAME, uiConfigBean);
     }
 
     public void validate(@NotNull final ActionParametersMap params, @NotNull final ErrorCollection errorCollection) {
-        String selectedExecutable = params.getString(SELECTED_EXECUTABLE);
-
+        String apiKey = params.getString(APPLITOOLS_API_KEY);
         super.validate(params, errorCollection);
-
-        errorIfEmpty(SELECTED_EXECUTABLE, SELECTED_EXECUTABLE_ERROR_KEY, selectedExecutable, errorCollection);
-
-        EnvVarsParser envVars = new EnvVarsParser(params.getString(ENVIRONMENT_VARIABLES));
-        if (!envVars.isValid()) {
-            errorCollection.addError(ENVIRONMENT_VARIABLES, textProvider.getText(ENV_VARS_PARSE_ERROR_KEY));
-        }
-
-        errorIfEmpty(APPLITOOLS_API_KEY, APPLITOOLS_API_KEY_ERROR_KEY, params.getString(APPLITOOLS_API_KEY), errorCollection);
-
+        errorIfEmpty(APPLITOOLS_API_KEY, APPLITOOLS_API_KEY_ERROR_KEY, apiKey, errorCollection);
     }
 
 
@@ -118,15 +81,16 @@ public class ApplitoolsTaskConfigurator extends AbstractTaskConfigurator impleme
         }
     }
 
+
     @NotNull
     @Override
     public Set<Requirement> calculateRequirements(@NotNull TaskDefinition taskDefinition) {
       Set<Requirement> result = new HashSet<Requirement>();
-      Requirement commandRequirement = new RequirementImpl(
-              CAPABILITY_KEY_PREFIX + taskDefinition.getConfiguration().get(SELECTED_EXECUTABLE),
-              true, ".*"
-      );
-      result.add(commandRequirement);
+//      Requirement commandRequirement = new RequirementImpl(
+//              CAPABILITY_KEY_PREFIX + taskDefinition.getConfiguration().get(SELECTED_EXECUTABLE),
+//              true, ".*"
+//      );
+//      result.add(commandRequirement);
       return result;
     }
 }

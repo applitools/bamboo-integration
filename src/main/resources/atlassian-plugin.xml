@@ -17,8 +17,8 @@
     </xwork>
 
 
-    <taskType key="ApplitoolsTestsTask" name="Applitools Tests Task" class="com.applitools.bamboo.ApplitoolsTaskRunner">
-        <description>A task that runs Applitools visual tests</description>
+    <taskType key="ApplitoolsTask" name="Applitools Task" class="com.applitools.bamboo.ApplitoolsTaskRunner">
+        <description>A task that exports Applitools-related environment variables</description>
         <configuration class="com.applitools.bamboo.ApplitoolsTaskConfigurator"/>
         <resource type="freemarker" name="edit" location="/taskConfigurator/editApplitoolsTask.ftl"/>
     </taskType>

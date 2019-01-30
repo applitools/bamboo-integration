@@ -3,5 +3,5 @@
 </head>
 
 <body>
-<h1>There are no Apllitools test task in this build</h1>
+<h1>There are no Apllitools task in this build</h1>
 </body>
