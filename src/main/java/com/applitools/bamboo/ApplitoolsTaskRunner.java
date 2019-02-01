@@ -18,6 +18,7 @@ import java.util.Map;
 @Scanned
 public class ApplitoolsTaskRunner implements TaskType {
     private static final String BATCH_ID = "APPLITOOLS_BATCH_ID";
+    private static final String BATCH_NAME = "APPLITOOLS_BATCH_NAME";
     private static final String APPLITOOLS_API_KEY = "APPLITOOLS_API_KEY";
     private static final String APPLITOOLS_SERVER_URL = "APPLITOOLS_SERVER_URL";
 
@@ -40,10 +41,12 @@ public class ApplitoolsTaskRunner implements TaskType {
 
         ConfigurationMap configMap = taskContext.getConfigurationMap();
         String apiKey = configMap.get(ApplitoolsTaskConfigurator.APPLITOOLS_API_KEY);
+        String batchName = taskContext.getBuildContext().getDisplayName();
         String serverUrl = StringUtils.defaultIfEmpty(configMap.get(ApplitoolsTaskConfigurator.APPLITOOLS_SERVER_URL), ViewApplitoolsResults.APPLITOOLS_SERVER);
         String batchId = PlanUidUtils.getBatchId(taskContext.getBuildContext().getTypedPlanKey().getKey(), taskContext.getBuildContext().getBuildNumber());
         Map<String, String> customBuildData = taskContext.getBuildContext().getParentBuildContext().getCurrentResult().getCustomBuildData();
         customBuildData.put(BATCH_ID, batchId);
+        customBuildData.put(BATCH_NAME, batchName);
         customBuildData.put(APPLITOOLS_API_KEY, apiKey);
         customBuildData.put(APPLITOOLS_SERVER_URL, serverUrl);
         return builder.success().build();
