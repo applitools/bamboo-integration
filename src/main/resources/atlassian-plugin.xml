@@ -21,6 +21,7 @@
         <description>A task that exports Applitools-related environment variables</description>
         <configuration class="com.applitools.bamboo.ApplitoolsTaskConfigurator"/>
         <resource type="freemarker" name="edit" location="/taskConfigurator/editApplitoolsTask.ftl"/>
+        <resource type="download" name="icon" location="applitools_80x80.png"/>
     </taskType>
 
     <!-- add our i18n resource -->
