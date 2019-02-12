@@ -7,14 +7,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.applitools.bamboo</groupId>
     <artifactId>bamboo-integration-plugin</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 
     <organization>
         <name>Applitools</name>
         <url>http://applitools.com/</url>
     </organization>
 
-    <name>bamboo-integration-plugin</name>
+    <name>Applitools Eyes Plugin</name>
     <description>This is the Applitools Bamboo integration plugin.</description>
     <packaging>atlassian-plugin</packaging>
 
