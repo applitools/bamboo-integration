@@ -1,8 +1,7 @@
 package ut.com.applitools.bamboo;
 
+import com.applitools.bamboo.BambooIntegrationPlugin;
 import org.junit.Test;
-import com.applitools.bamboo.api.ApplitoolsPluginComponent;
-import com.applitools.bamboo.impl.ApplitoolsPluginComponentImpl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,7 +10,7 @@ public class ApplitoolsComponentUnitTest
     @Test
     public void testMyName()
     {
-        ApplitoolsPluginComponent component = new ApplitoolsPluginComponentImpl(null);
-        assertEquals("names do not match!", "ApplitoolsComponent",component.getName());
+        BambooIntegrationPlugin component = new BambooIntegrationPlugin(null);
+        assertEquals("names do not match!", "Applitools Bamboo integration plugin",component.getName());
     }
 }
