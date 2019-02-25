@@ -3,7 +3,9 @@ package com.applitools.bamboo;
 import com.atlassian.bamboo.build.ChainResultsAction;
 import com.atlassian.bamboo.plan.cache.ImmutableJob;
 import com.atlassian.bamboo.task.TaskDefinition;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+
 
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class ViewApplitoolsResults extends ChainResultsAction {
             if (MODULE_KEY == task.getPluginKey() && task.isEnabled()) {
                 result = true;
                 this.applitoolsServerUrl = StringUtils.defaultIfEmpty(task.getConfiguration().get(ApplitoolsTaskConfigurator.APPLITOOLS_SERVER_URL), APPLITOOLS_SERVER);
-                this.iframeUrl =  this.applitoolsServerUrl + RESULT_PATH + QUERY_STRING_BEFORE_BATCH_ID + batchId + QUERY_STRING_AFTER_BATCH_ID;
+                this.iframeUrl =  StringEscapeUtils.escapeHtml4(this.applitoolsServerUrl + RESULT_PATH + QUERY_STRING_BEFORE_BATCH_ID + batchId + QUERY_STRING_AFTER_BATCH_ID);
                 break;
             }
         }
