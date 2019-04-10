@@ -3,8 +3,14 @@
         <description>${project.description}</description>
         <version>${project.version}</version>
         <vendor name="${project.organization.name}" url="${project.organization.url}"/>
-        <!--<param name="plugin-icon">images/pluginIcon.png</param>-->
-        <!--<param name="plugin-logo">images/pluginLogo.png</param>-->
+        <param name="plugin-icon">images/applitools_logo_16_16.png</param>
+        <param name="plugin-logo">images/applitools_logo_144_144.png</param>
+
+
+
+        <param name="plugin-banner">images/applitools_banner_560_274.png</param>
+        <param name="vendor-icon">images/applitools_logo_16_16.png</param>
+        <param name="vendor-logo">images/applitools_logo_144_144.png</param>
     </plugin-info>
 
     <xwork key="viewApplitoolsResult" name="View Applitools Result">

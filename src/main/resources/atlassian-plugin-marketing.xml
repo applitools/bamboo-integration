@@ -1,0 +1,24 @@
+<atlassian-plugin-marketing>
+
+    <!--Describe names and versions of compatible applications -->
+    <compatibility>
+        <product name="bamboo" min="6.0" max="6.8"/>
+    </compatibility>
+
+    <!-- Describe your app logo and banner. The banner is only displayed in the UPM. -->
+    <logo image="images/applitools_logo_144_144.png"/>
+    <banner image="images/applitools_banner_560_274.png"/>
+
+    <!-- Describe highlight and cropped highlight image assets, in order. -->
+    <!--<highlights>-->
+        <!--<highlight image="images/03_highlight1_ss.jpg" cropped="images/04_highlight1_cropped.jpg"/>-->
+        <!--<highlight image="images/05_highlight2_ss.jpg" cropped="images/06_highlight2_cropped.jpg"/>-->
+        <!--<highlight image="images/07_highlight3_ss.jpg" cropped="images/08_highlight3_cropped.jpg"/>-->
+    <!--</highlights>-->
+
+    <!-- Describe additional screenshots you'd like listed on your app listing. -->
+    <screenshots>
+        <screenshot image="images/screenshot_01.png"/>
+    </screenshots>
+
+</atlassian-plugin-marketing>
