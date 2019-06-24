@@ -21,6 +21,7 @@ public class ApplitoolsTaskRunner implements TaskType {
     private static final String BATCH_NAME = "APPLITOOLS_BATCH_NAME";
     private static final String APPLITOOLS_API_KEY = "APPLITOOLS_API_KEY";
     private static final String APPLITOOLS_SERVER_URL = "APPLITOOLS_SERVER_URL";
+    private static final String SEQUENCE_NAME = "APPLITOOLS_SEQUENCE_NAME";
 
 
     @ComponentImport
@@ -42,6 +43,7 @@ public class ApplitoolsTaskRunner implements TaskType {
         ConfigurationMap configMap = taskContext.getConfigurationMap();
         String apiKey = configMap.get(ApplitoolsTaskConfigurator.APPLITOOLS_API_KEY);
         String batchName = taskContext.getBuildContext().getDisplayName();
+        String projectName = taskContext.getBuildContext().getProjectName();
         String serverUrl = StringUtils.defaultIfEmpty(configMap.get(ApplitoolsTaskConfigurator.APPLITOOLS_SERVER_URL), ViewApplitoolsResults.APPLITOOLS_SERVER);
         String batchId = PlanUidUtils.getBatchId(taskContext.getBuildContext().getTypedPlanKey().getKey(), taskContext.getBuildContext().getBuildNumber());
         Map<String, String> customBuildData = taskContext.getBuildContext().getParentBuildContext().getCurrentResult().getCustomBuildData();
@@ -49,6 +51,7 @@ public class ApplitoolsTaskRunner implements TaskType {
         customBuildData.put(BATCH_NAME, batchName);
         customBuildData.put(APPLITOOLS_API_KEY, apiKey);
         customBuildData.put(APPLITOOLS_SERVER_URL, serverUrl);
+        customBuildData.put(SEQUENCE_NAME, projectName);
         return builder.success().build();
     }
 }
