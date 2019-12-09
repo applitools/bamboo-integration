@@ -21,7 +21,7 @@ public class ApplitoolsTaskRunner implements TaskType {
     private static final String BATCH_NAME = "APPLITOOLS_BATCH_NAME";
     private static final String APPLITOOLS_API_KEY = "APPLITOOLS_API_KEY";
     private static final String APPLITOOLS_SERVER_URL = "APPLITOOLS_SERVER_URL";
-    private static final String SEQUENCE_NAME = "APPLITOOLS_SEQUENCE_NAME";
+    private static final String BATCH_SEQUENCE = "APPLITOOLS_BATCH_SEQUENCE";
 
 
     @ComponentImport
@@ -51,7 +51,7 @@ public class ApplitoolsTaskRunner implements TaskType {
         customBuildData.put(BATCH_NAME, batchName);
         customBuildData.put(APPLITOOLS_API_KEY, apiKey);
         customBuildData.put(APPLITOOLS_SERVER_URL, serverUrl);
-        customBuildData.put(SEQUENCE_NAME, projectName);
+        customBuildData.put(BATCH_SEQUENCE, projectName);
         return builder.success().build();
     }
 }
