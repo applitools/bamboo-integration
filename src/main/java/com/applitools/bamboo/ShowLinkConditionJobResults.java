@@ -1,36 +1,19 @@
 package com.applitools.bamboo;
 
-import com.atlassian.bamboo.build.Job;
-import com.atlassian.bamboo.plan.Plan;
+import com.atlassian.bamboo.plan.PlanKey;
+import com.atlassian.bamboo.plan.PlanKeys;
 import com.atlassian.bamboo.plan.PlanManager;
-import com.atlassian.bamboo.task.TaskDefinition;
+import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 
-import java.util.List;
-import java.util.Map;
+@Scanned
+public class ShowLinkConditionJobResults extends ApplitoolsLinkCondition {
 
-
-public class ShowLinkConditionJobResults extends ApplitoolsLinkCondition implements com.atlassian.plugin.web.Condition {
-
-    public ShowLinkConditionJobResults(PlanManager planManager) {
+    public ShowLinkConditionJobResults(@ComponentImport PlanManager planManager) {
         super(planManager);
     }
-
-    @Override
-    public void init(Map<String, String> value) {
-
-    }
-
-    @Override
-    public boolean shouldDisplay(Map<String, Object> map) {
-        Boolean result = false;
-        Plan plan = getPlan(map.get("planKey").toString());
-        List<TaskDefinition> taskDefinitions = ((Job)plan).getTaskDefinitions();
-        for (TaskDefinition task : taskDefinitions) {
-            if (MODULE_KEY == task.getPluginKey() && task.isEnabled()) {
-                result = true;
-                break;
-            }
-        }
-        return result;
+    protected PlanKey getPlanKey(String planKey) {
+        PlanKey jobKey = PlanKeys.getPlanKey(planKey);
+        return PlanKeys.getChainKeyIfJobKey(jobKey);
     }
 }

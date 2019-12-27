@@ -13,6 +13,25 @@
         <param name="vendor-logo">images/applitools_logo_144_144.png</param>
     </plugin-info>
 
+    <additionalBuildConfigurationPlugin key="applitoolsBuildConfig" name="Applitools build configuration" class="com.applitools.bamboo.AdditionalPlanConfiguration">
+        <description>The Applitools build configuration</description>
+        <resource type="freemarker" name="edit" location="/applitoolsBuildConfiguration/editApplitoolsBuildConfiguration.ftl"/>
+        <resource type="freemarker" name="view" location="/applitoolsBuildConfiguration/editApplitoolsBuildConfiguration.ftl"/>
+    </additionalBuildConfigurationPlugin>
+
+    <buildDefinitionTransformer key="applitoolsBuildConfigTransformer" name="Applitools build Configuration Transformer" class="com.applitools.bamboo.AdditionalPlanConfigurationTransformer"/>
+
+    <preBuildAction key="applitoolsEnvVarsSetter" name="Applitools ENV Variables setter"
+                    class="com.applitools.bamboo.EnvVarsSetter">
+        <description>A custom action that exports Applitools-related ENV variables.</description>
+        <!--<resource type="freemarker" name="edit" location="templates/plugins/preBuildAction/vcsVersionReaderEdit.ftl"/>-->
+        <!--<resource type="freemarker" name="view" location="templates/plugins/preBuildAction/vcsVersionReaderView.ftl"/>-->
+    </preBuildAction>
+
+    <postChainAction key="applitoolsPostChainAction" class="com.applitools.bamboo.ApplitoolsPostChainAction" name="Applitools post chain action">
+        <description>Notifies the Applitools server on batch completion</description>
+    </postChainAction>
+
     <xwork key="viewApplitoolsResult" name="View Applitools Result">
         <package name="ViewApplitoolsResultsXwork" extends="buildView">
             <action name="viewApplitoolsResult" class="com.applitools.bamboo.ViewApplitoolsResults">
@@ -21,14 +40,6 @@
             </action>
         </package>
     </xwork>
-
-
-    <taskType key="ApplitoolsTask" name="Applitools Task" class="com.applitools.bamboo.ApplitoolsTaskRunner">
-        <description>A task that exports Applitools-related environment variables</description>
-        <configuration class="com.applitools.bamboo.ApplitoolsTaskConfigurator"/>
-        <resource type="freemarker" name="edit" location="/taskConfigurator/editApplitoolsTask.ftl"/>
-        <resource type="download" name="icon" location="applitools_80x80.png"/>
-    </taskType>
 
     <!-- add our i18n resource -->
     <resource type="i18n" name="i18n" location="bamboo-applitools-plugin"/>
@@ -61,6 +72,4 @@
         </link>
         <condition class="com.applitools.bamboo.ShowLinkConditionJobResults" />
     </web-item>
-
-
 </atlassian-plugin>

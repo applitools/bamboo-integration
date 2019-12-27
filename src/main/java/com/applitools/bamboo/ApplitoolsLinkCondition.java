@@ -8,21 +8,33 @@ import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 
 import javax.inject.Inject;
+import java.util.Map;
 
-@Scanned
-public class ApplitoolsLinkCondition {
-    public static final String MODULE_KEY="com.applitools.bamboo.bamboo-integration-plugin:ApplitoolsTask";
-    @ComponentImport
-    private final PlanManager planManager;
-
-    @Inject
+public abstract class ApplitoolsLinkCondition implements com.atlassian.plugin.web.Condition{
+    private PlanManager planManager;
+    private static String PLAN_KEY = "planKey";
     public ApplitoolsLinkCondition(PlanManager planManager) {
-          this.planManager = planManager;
+        this.planManager = planManager;
     }
 
-    protected Plan getPlan(String key) {
-        PlanKey planKey = PlanKeys.getPlanKey(key);
-        return getPlanManager().getPlanByKey(planKey);
+    @Override
+    public void init(Map<String, String> map) {
+    }
+
+    @Override
+    public boolean shouldDisplay(Map<String, Object> map) {
+        Map<String, Object> configObjects = getConfigObjects((String)map.get(PLAN_KEY));
+        return !(configObjects.get(ApplitoolsConfiguration.ApplitoolsConfigurationKey) == null);
+    }
+
+    private Map<String, Object> getConfigObjects(String planKey) {
+        return getPlan(planKey).getBuildDefinition().getConfigObjects();
+    }
+
+    abstract protected PlanKey getPlanKey(String planKey);
+
+    private Plan getPlan(String planKey) {
+        return getPlanManager().getPlanByKey(getPlanKey(planKey));
     }
 
     public PlanManager getPlanManager() {
