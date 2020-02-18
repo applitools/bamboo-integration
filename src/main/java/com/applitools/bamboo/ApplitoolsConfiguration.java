@@ -15,6 +15,7 @@ public class ApplitoolsConfiguration {
     private String apiKey;
     private URI serverUrl;
     private boolean notifyByCompletion;
+    private String iframeUrlHost;
 
     public ApplitoolsConfiguration() {
         this.notifyByCompletion = false;
@@ -28,6 +29,14 @@ public class ApplitoolsConfiguration {
         return serverUrl;
     }
 
+    private void setIframeUrlHost(URI serverUrl) {
+        String serverUrlHost = serverUrl.getHost();
+        if (serverUrlHost != null) {
+            String iframeUrlHost = serverUrlHost.replaceAll("^(.*)api.", "$1.");
+            this.iframeUrlHost = iframeUrlHost == null ? serverUrlHost : iframeUrlHost;
+        }
+    }
+
     public boolean getNotifyByCompletion() {
         return notifyByCompletion;
     }
@@ -38,6 +47,7 @@ public class ApplitoolsConfiguration {
 
     public void setServerUrl(URI value) {
         this.serverUrl = value;
+        setIframeUrlHost(serverUrl);
     }
 
     public void setServerUrl(String value) {
@@ -64,7 +74,7 @@ public class ApplitoolsConfiguration {
                     new URI(
                             getServerUrl().getScheme(),
                             getServerUrl().getUserInfo(),
-                            getServerUrl().getHost(),
+                            iframeUrlHost,
                             getServerUrl().getPort(),
                             RESULT_PATH,
                             query,
